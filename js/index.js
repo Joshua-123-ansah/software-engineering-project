@@ -60,7 +60,7 @@ function nftCollections() {
       snapshot.docs.forEach((doc) => {
         collection.push({ ...doc.data() });
 
-        col_names[i] = [doc.data().col_name, doc.data().floor_price];
+        col_names[i] = [doc.data().col_name, doc.data().floor_price, doc.data().tweet_count];
         i = i + 1;
       });
     })
@@ -75,10 +75,13 @@ const names = nftCollections();
 
 const chart1 = document.getElementById("NFT-Collections");
 const chart2 = document.getElementById("NFT-Collections2");
+const chart3 = document.getElementById("NFT-Collections3");
 
 const f = 0;
 const dlist = document.getElementById("NFT-Collections");
 const dlist2 = document.getElementById("NFT-Collections2");
+const dlist3 = document.getElementById("NFT-Collections3");
+
 if (dlist) {
   let options = '<option value="Choose..." > Choose...</option>';
   let i = 0;
@@ -86,15 +89,17 @@ if (dlist) {
     .then((snapshot) => {
       let c1 = "";
       let c2 = "";
+      let c3 = "";
       snapshot.docs.forEach((doc) => {
         options +=
           '<option value="' + names[i][0] + '" >' + names[i][0] + "</option>";
-        console.log(names[i][0]);
         i = i + 1;
       });
       dlist.innerHTML = options;
       dlist2.innerHTML = options;
+      dlist3.innerHTML = options;
 
+      // Dynamically retrieving the charts
       chart1.addEventListener("change", (e) => {
         i = 0;
         snapshot.docs.forEach((doc) => {
@@ -160,6 +165,7 @@ if (dlist) {
           }
           if (chart2.value == names[i][0]) {
             c2 = names[i][1];
+            console.log(c2)
           }
           i += 1;
         });
@@ -208,13 +214,56 @@ if (dlist) {
         });
         myChart2;
       });
+
+      // Twitter engagement chart
+      chart3.addEventListener("change", (e) => {
+        i = 0;
+        snapshot.docs.forEach((doc) => {
+          if (chart3.value == names[i][0]) {
+            c3 = names[i][2];
+          }
+          i += 1;
+        });
+
+        var ctx2 = document.getElementById("spurChartjsBar").getContext("2d");
+        var myChart3 = new Chart(ctx2, {
+          type: "line",
+          data: {
+            labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
+            datasets: [
+              {
+                label: chart3.value,
+                data: c3,
+                backgroundColor: "rgba(6, 11, 38, 1)",
+                borderColor: "#152584",
+              },
+            ],
+          },
+          options: {
+            legend: {
+              display: false,
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                },
+              ],
+            },
+          },
+        });
+        myChart3;
+      });
     })
+
     .catch((err) => {
       console.log(err.message);
     });
-  // options += '<option value="' + names[i] + '" />'; // Storing options in variable
-  // console.log(0)
 }
+
+// Chart for twitter engagement
 
 const addUser = async (uid, email, name) => {
   await setDoc(doc(colRef, uid), {
@@ -233,15 +282,18 @@ if (signupForm) {
     const email = signupForm.email.value;
     const name = signupForm.name.value;
     const password = signupForm.password.value;
+    const password_confirm = signupForm.confirmPassword.value;
 
-    //TODO confirm password validation
+    if (password !== password_confirm) {
+      alert("Password does not match");
+    }
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         addUser(cred.user.uid, email, name);
 
-        // signupForm.reset();
-        // window.location.href = "./login.html";
+        signupForm.reset();
+        window.location.href = "./login.html";
       })
       .catch((err) => {
         alert("Your email is incorrect or password is less than 6");
@@ -260,12 +312,9 @@ if (loginForm) {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        // loginForm.reset();
-        // console.log(cred.user.uid);
-        // let userinfo = doc(db, "users", cred.user.uid);
-        // let docSnapShot=getDoc(userinfo)
-        // console.log(docSnapShot.data());
-        // window.location.href = "./index.html";
+        loginForm.reset();
+        console.log("Going in");
+        window.location.href = "./index.html";
       })
       .catch((err) => {
         alert("Invalid user name or password");
@@ -273,15 +322,21 @@ if (loginForm) {
   });
 }
 
+let user_info = [];
 const loginName = document.getElementById("logIn");
-loginName.addEventListener("click", (e) => {
-  e.preventDefault();
-  login_user_info();
-});
+if (loginName) {
+  loginName.addEventListener("click", (e) => {
+    // e.preventDefault();
+    user_info = login_user_info();
+  });
+}
 
 const login_user_info = async () => {
   const user_uid = auth.currentUser.uid;
   let userInfoSnapshot = doc(db, "users", user_uid);
   let userInfo = await getDoc(userInfoSnapshot);
-  console.log(userInfo.data());
+  return [userInfo.data().name, userInfo.data().email]
 };
+
+const user_name = document.getElementById("dash-name");
+user_name
