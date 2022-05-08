@@ -293,7 +293,7 @@ if (signupForm) {
         addUser(cred.user.uid, email, name);
 
         signupForm.reset();
-        window.location.href = "./login.html";
+        window.location.href = "./index.html";
       })
       .catch((err) => {
         alert("Your email is incorrect or password is less than 6");
@@ -314,7 +314,7 @@ if (loginForm) {
       .then((cred) => {
         loginForm.reset();
         console.log("Going in");
-        window.location.href = "./index.html";
+        window.location.href = "./home.html";
       })
       .catch((err) => {
         alert("Invalid user name or password");
