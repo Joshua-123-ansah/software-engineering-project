@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 import {
   getAuth,
@@ -41,147 +49,175 @@ getDocs(colRef)
     console.log(err.message);
   });
 
-
 function nftCollections() {
-  const colns = [];//
+  const colns = []; //
   const col_names = {};
-  
+
   let i = 0;
   getDocs(nftcol)
     .then((snapshot) => {
-      let collection = colns
+      let collection = colns;
       snapshot.docs.forEach((doc) => {
         collection.push({ ...doc.data() });
-        
-        col_names[i] = [doc.data().col_name, doc.data().floor_price]
-        i = i + 1
+
+        col_names[i] = [doc.data().col_name, doc.data().floor_price];
+        i = i + 1;
       });
     })
     .catch((err) => {
       console.log(err.message);
     });
-  
+
   return col_names;
 }
 
-const names = nftCollections()
+const names = nftCollections();
 
-const chart1 = document.getElementById("NFT-Collections")
-const chart2 = document.getElementById("NFT-Collections2")
+const chart1 = document.getElementById("NFT-Collections");
+const chart2 = document.getElementById("NFT-Collections2");
 
-const f = 0
+const f = 0;
 const dlist = document.getElementById("NFT-Collections");
 const dlist2 = document.getElementById("NFT-Collections2");
 if (dlist) {
   let options = '<option value="Choose..." > Choose...</option>';
-  let i = 0
+  let i = 0;
   getDocs(nftcol)
-  .then((snapshot) => {
-    let c1 = ""
-    let c2 = ""
-    snapshot.docs.forEach((doc) => {
-      options += '<option value="' + names[i][0] + '" >' + names[i][0] + '</option>';
-      console.log(names[i][0])
-      i = i + 1
-    });
-    dlist.innerHTML = options
-    dlist2.innerHTML = options
-    
-   chart1.addEventListener("change",  (e) => {
-    i = 0
-    snapshot.docs.forEach((doc) => {
-      if  (chart1.value == names[i][0]) {
-        c1 = names[i][1];
-      }
-      if  (chart2.value == names[i][0]) {
-        c2 = names[i][1];
-      }
-      i += 1;
-     });
-     
-      var ctx = document.getElementById("spurChartjsLine").getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
+    .then((snapshot) => {
+      let c1 = "";
+      let c2 = "";
+      snapshot.docs.forEach((doc) => {
+        options +=
+          '<option value="' + names[i][0] + '" >' + names[i][0] + "</option>";
+        console.log(names[i][0]);
+        i = i + 1;
+      });
+      dlist.innerHTML = options;
+      dlist2.innerHTML = options;
+
+      chart1.addEventListener("change", (e) => {
+        i = 0;
+        snapshot.docs.forEach((doc) => {
+          if (chart1.value == names[i][0]) {
+            c1 = names[i][1];
+          }
+          if (chart2.value == names[i][0]) {
+            c2 = names[i][1];
+          }
+          i += 1;
+        });
+
+        var ctx = document.getElementById("spurChartjsLine").getContext("2d");
+        var myChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
                 label: chart1.value,
                 data: c1,
-                backgroundColor: 'rgba(6, 11, 38, 0.3)',
-                borderColor: ' #6578e7',
-                fill: true
-            }, {
+                backgroundColor: "rgba(6, 11, 38, 0.3)",
+                borderColor: " #6578e7",
+                fill: true,
+              },
+              {
                 label: chart2.value,
                 data: c2,
-                backgroundColor: 'rgba(6, 11, 38, 0.3)',
-                borderColor: ' #1c32b0',
+                backgroundColor: "rgba(6, 11, 38, 0.3)",
+                borderColor: " #1c32b0",
                 borderwidth: 0.5,
-                fill: true
-            }]
-        },
-        options: {
-            legend: {
-                display: true
-            }
-        }
-    });
-    myChart
-    })
-
-    chart2.addEventListener("change",  (e) => {
-      i = 0
-      snapshot.docs.forEach((doc) => {
-        if  (chart1.value == names[i][0]) {
-          c1 = names[i][1];
-        }
-        if  (chart2.value == names[i][0]) {
-          c2 = names[i][1];
-        }
-        i += 1;
-       });
-       
-        var ctx = document.getElementById("spurChartjsLine").getContext('2d');
-        var myChart2 = new Chart(ctx, {
-          type: 'line',
-          data: {
-              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              datasets: [{
-                  label: chart1.value,
-                  data: c1,
-                  backgroundColor: 'rgba(6, 11, 38, 0.3)',
-                  borderColor: ' #6578e7',
-                  fill: true
-              }, {
-                  label: chart2.value,
-                  data: c2,
-                  backgroundColor: 'rgba(6, 11, 38, 0.3)',
-                  borderColor: ' #1c32b0',
-                  borderwidth: 0.5,
-                  fill: true
-              }]
+                fill: true,
+              },
+            ],
           },
           options: {
-              legend: {
-                  display: true
-              }
-          }
+            legend: {
+              display: true,
+            },
+          },
+        });
+        myChart;
       });
-      myChart2
-      })
-    
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
-    // options += '<option value="' + names[i] + '" />'; // Storing options in variable
-    // console.log(0)  
+
+      chart2.addEventListener("change", (e) => {
+        i = 0;
+        snapshot.docs.forEach((doc) => {
+          if (chart1.value == names[i][0]) {
+            c1 = names[i][1];
+          }
+          if (chart2.value == names[i][0]) {
+            c2 = names[i][1];
+          }
+          i += 1;
+        });
+
+        var ctx = document.getElementById("spurChartjsLine").getContext("2d");
+        var myChart2 = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: chart1.value,
+                data: c1,
+                backgroundColor: "rgba(6, 11, 38, 0.3)",
+                borderColor: " #6578e7",
+                fill: true,
+              },
+              {
+                label: chart2.value,
+                data: c2,
+                backgroundColor: "rgba(6, 11, 38, 0.3)",
+                borderColor: " #1c32b0",
+                borderwidth: 0.5,
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            legend: {
+              display: true,
+            },
+          },
+        });
+        myChart2;
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  // options += '<option value="' + names[i] + '" />'; // Storing options in variable
+  // console.log(0)
 }
 
-
-
-
-const addUser = (uid, email, name) => {
-  addDoc(colRef, {
+const addUser = async (uid, email, name) => {
+  await setDoc(doc(colRef, uid), {
     uid: uid,
     name: name,
     email: email,
@@ -203,11 +239,12 @@ if (signupForm) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         addUser(cred.user.uid, email, name);
-        signupForm.reset();
-        window.location.href = "./login.html";
+
+        // signupForm.reset();
+        // window.location.href = "./login.html";
       })
       .catch((err) => {
-        console.log(err.message);
+        alert("Your email is incorrect or password is less than 6");
       });
   });
 }
@@ -218,16 +255,16 @@ if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-
     const email = loginForm.email.value;
     const password = loginForm.password.value;
 
     signInWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        loginForm.reset();
-        console.log(cred.user.uid);
-        let userinfo=doc(db,'users',cred.user.uid);
-        console.log(userinfo);
+        // loginForm.reset();
+        // console.log(cred.user.uid);
+        // let userinfo = doc(db, "users", cred.user.uid);
+        // let docSnapShot=getDoc(userinfo)
+        // console.log(docSnapShot.data());
         // window.location.href = "./index.html";
       })
       .catch((err) => {
@@ -236,9 +273,15 @@ if (loginForm) {
   });
 }
 
+const loginName = document.getElementById("logIn");
+loginName.addEventListener("click", (e) => {
+  e.preventDefault();
+  login_user_info();
+});
 
-const loginName = document.getElementById("login-name");
-const login_user_info=()=> {
-  let userinfo=doc(db,'users',auth.currentUser.uid);
-  console.log(userinfo);
-}
+const login_user_info = async () => {
+  const user_uid = auth.currentUser.uid;
+  let userInfoSnapshot = doc(db, "users", user_uid);
+  let userInfo = await getDoc(userInfoSnapshot);
+  console.log(userInfo.data());
+};
