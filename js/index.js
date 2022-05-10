@@ -60,7 +60,11 @@ function nftCollections() {
       snapshot.docs.forEach((doc) => {
         collection.push({ ...doc.data() });
 
-        col_names[i] = [doc.data().col_name, doc.data().floor_price, doc.data().tweet_count];
+        col_names[i] = [
+          doc.data().col_name,
+          doc.data().floor_price,
+          doc.data().tweet_count,
+        ];
         i = i + 1;
       });
     })
@@ -165,7 +169,7 @@ if (dlist) {
           }
           if (chart2.value == names[i][0]) {
             c2 = names[i][1];
-            console.log(c2)
+            console.log(c2);
           }
           i += 1;
         });
@@ -289,10 +293,8 @@ if (signupForm) {
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        addUser(cred.user.uid, email, name);
-
-        signupForm.reset();
+      .then(async (cred) => {
+        await addUser(cred.user.uid, email, name);
         window.location.href = "./index.html";
       })
       .catch((err) => {
@@ -335,8 +337,8 @@ const login_user_info = async () => {
   const user_uid = auth.currentUser.uid;
   let userInfoSnapshot = doc(db, "users", user_uid);
   let userInfo = await getDoc(userInfoSnapshot);
-  return [userInfo.data().name, userInfo.data().email]
+  return [userInfo.data().name, userInfo.data().email];
 };
 
 const user_name = document.getElementById("dash-name");
-user_name
+user_name;
