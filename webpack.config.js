@@ -8,5 +8,5 @@ module.exports = {
     filename: "bundle.js",
   },
   devtool: "eval-source-map",
-  watch: true,
+  watch: false,
 };
