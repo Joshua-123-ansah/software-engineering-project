@@ -316,7 +316,7 @@ if (loginForm) {
       .then((cred) => {
         loginForm.reset();
         console.log("Going in");
-        window.location.href = "./home.html";
+        window.location = "home.html";
       })
       .catch((err) => {
         alert("Invalid user name or password");
