@@ -13,6 +13,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -35,6 +37,8 @@ const auth = getAuth();
 // Reference users collection
 const colRef = collection(db, "users");
 const nftcol = collection(db, "collections");
+
+var arr = [];
 
 // get collection data
 getDocs(colRef)
@@ -77,6 +81,8 @@ function nftCollections() {
 
 const names = nftCollections();
 
+const line1 = document.getElementById("Engagement-NFT");
+
 const chart1 = document.getElementById("NFT-Collections");
 const chart2 = document.getElementById("NFT-Collections2");
 const chart3 = document.getElementById("NFT-Collections3");
@@ -85,6 +91,7 @@ const f = 0;
 const dlist = document.getElementById("NFT-Collections");
 const dlist2 = document.getElementById("NFT-Collections2");
 const dlist3 = document.getElementById("NFT-Collections3");
+const dlist4 = document.getElementById("Engagement-NFT");
 
 if (dlist) {
   let options = '<option value="Choose..." > Choose...</option>';
@@ -102,6 +109,7 @@ if (dlist) {
       dlist.innerHTML = options;
       dlist2.innerHTML = options;
       dlist3.innerHTML = options;
+      dlist4.innerHTML = options;
 
       // Dynamically retrieving the charts
       chart1.addEventListener("change", (e) => {
@@ -303,6 +311,7 @@ if (signupForm) {
   });
 }
 
+window.user_info = [];
 //Login a user in
 const loginForm = document.getElementById("login");
 if (loginForm) {
@@ -313,10 +322,8 @@ if (loginForm) {
     const password = loginForm.password.value;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        loginForm.reset();
-        console.log("Going in");
-        window.location = "home.html";
+      .then(async (cred) => {
+        window.location = `home.html`;
       })
       .catch((err) => {
         alert("Invalid user name or password");
@@ -324,21 +331,41 @@ if (loginForm) {
   });
 }
 
-let user_info = [];
-const loginName = document.getElementById("logIn");
-if (loginName) {
-  loginName.addEventListener("click", (e) => {
-    // e.preventDefault();
-    user_info = login_user_info();
+const user_name = document.getElementById("dash-name");
+const profile_name = document.getElementById("profile-name");
+const profile_email = document.getElementById("profile-email");
+
+const logout = document.getElementById("logout-btn");
+
+if (logout) {
+  logout.addEventListener("click", (e) => {
+    signOut(auth)
+      .then(() => {
+        window.location = `index.html`;
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   });
 }
 
-const login_user_info = async () => {
-  const user_uid = auth.currentUser.uid;
-  let userInfoSnapshot = doc(db, "users", user_uid);
-  let userInfo = await getDoc(userInfoSnapshot);
-  return [userInfo.data().name, userInfo.data().email];
-};
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    let userInfoSnapshot = doc(db, "users", user.uid);
+    let userInfo = await getDoc(userInfoSnapshot);
+    // console.log(userInfo.data());
+    if(user_name) {
+      user_name.innerText = (userInfo.data().name);
+    }
 
-const user_name = document.getElementById("dash-name");
-user_name;
+    if(profile_name) {
+        profile_name.innerText = (userInfo.data().name);
+        profile_email.innerText =(userInfo.data().email);
+    }
+    
+    
+    console.log(userInfo.data().email);
+  } else {
+    await signOut(auth);
+  }
+});

@@ -40,7 +40,7 @@
                         <i class="fas fa-address-book"></i> Profile </a>
                 </div>
                 <div class="dash-nav-dropdown">
-                    <a href="index.html" class="dash-nav-item">
+                    <a href="" class="dash-nav-item" id="logout-btn">
                         <i class="fas fa-layer-group"></i> Logout </a>
                 </div>
             </nav>
@@ -97,47 +97,32 @@
                                     style="background-image:url(./images/profile.jpeg); width:580px;">
                                     <div class="card-body pt-4">
                                         <p class="card-subtitle mb-2 header-label">Welcome back,</pb>
-                                        <p style="font-size:20px; font-weight:700;" id="dash-name">Joshua Owusu Ansah</p>
+                                        <p style="font-size:20px; font-weight:700;" id="dash-name"></p>
                                         <p class="card-subtitle mb-5 header-label" style="padding-bottom:100px">Glad to
                                             see you again!</p>
-                                        <a href="#" class="card-link header-label">View Page →</a>
+                                        <a href="profile.html" class="card-link header-label">View Page →</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
-                                <div class="stats stats-edit-row2" style="margin-left:7em; width: 360px">
+                            <div class="col-xl-8">
+                                <div class="stats stats-edit-row2" style="margin-left:8em; width: 860px">
                                     <div class="card-body pt-4">
                                         <div class="row">
                                             <div class="col">
-                                                <h6>Success Rate</h6>
-                                                <p class="card-subtitle mb-5 pb-4 header-label">Dog NFT</p>
+                                                <h6>Engagement Tracker</h6>
+                                                <p class="card-subtitle mb-5 pb-4 header-label" id="engage-nft">Dog NFT</p>
                                             </div>
                                             <div class="col-4">
-                                                <input list="collections1" name="Collections" id="Collections"
-                                                    class="lists" placeholder="Collections...">
-                                                <datalist id="collections1">
-                                                    <option value="MakerVerse">
-                                                    <option value="Smallbros">
-                                                    <option value="Farm">
-                                                    <option value="Music">
-                                                    <option value="Doge">
-                                                </datalist>
-                                            </div>
-                                            <div class="col">
-                                                <input list="nFTs1" name="NFTs" id="NFTs" class="lists" placeholder="NFTs...">
-                                                <datalist id="nFTs1">
-                                                    <option value="MakerVerse">
-                                                    <option value="Smallbros">
-                                                    <option value="Farm">
-                                                    <option value="Music">
-                                                    <option value="Doge">
-                                                </datalist>
+                                                <div class="col-2">
+                                                    <select list="collections35" name="NFT-Collections" id="Engagement-NFT"
+                                                    class="lists" placeholder="Collections..." style="width:200px"></select>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div>
                                             <div class="row progress"
-                                                style="margin: 10px auto 20px; width:250px; height: 20px; background: rgba(6, 11, 38, 1);">
+                                                style="margin: 10px auto 20px; width:700px; height: 30px; background: rgba(6, 11, 38, 1);">
                                                 <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                     role="progressbar" aria-valuenow="75" aria-valuemin="0"
                                                     aria-valuemax="100" style="width: 95%; 
@@ -146,15 +131,16 @@
                                             <div class="card">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-3 header-label">
+                                                        <div class="col-2 header-label text-center">
                                                             0%
                                                         </div>
-                                                        <div class="col" style="text-align:center">
+                                                        <div class="col-7" style="text-align:center">
                                                             95% <br>
                                                             <p class="header-label">Based on likes </p>
                                                         </div>
-                                                        <div class="col-3 header-label">
-                                                            100%
+                                                        <div class="col-3 header-label text-center">
+                                                            100% <br>
+                                                            <span style="color:white; font-weight:700;">(Out of 10k likes)</span> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -163,57 +149,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
-                                <div class="stats stats-edit-row2" style="width:519px;">
-                                    <div class="card-body pt-4">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p>NFT Engagement Tracker</p>
-                                            </div>
-                                            <div class="col">
-                                                <div class="col">
-                                                    <input list="nFTs2" name="NFTs" id="NFTs" class="lists" placeholder="NFTs...">
-                                                    <datalist id="nFTs2">
-                                                        <option value="MakerVerse">
-                                                        <option value="Smallbros">
-                                                        <option value="Farm">
-                                                        <option value="Music">
-                                                        <option value="Doge">
-                                                    </datalist>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="card" style="width:200px">
-                                                        <div class="card-body">
-                                                            <header class="header-label">Comment</header>
-                                                            <p>781 people</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="card" style="width:200px">
-                                                        <div class="card-body">
-                                                            <header class="header-label">Target</header>
-                                                            <p>1000</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row progress"
-                                                style="margin-top:40px; height: 50px; background: rgba(6, 11, 38, 1);">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                    role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                                                    aria-valuemax="100" style="width: 78%; 
-                                                 background-color: #152584;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row" style="width: 1460px; margin-left:5px;">
                             <div class="col-xl-5">
                                 <div class="stats stats-edit-row3" style="width:850px;">
@@ -431,7 +366,7 @@
             fetch(url).then((res)=>{
                 return res.json();
             }).then((data)=>{
-                console.log(data)
+    
                 data.articles.forEach(article=>{
                    let li = document.createElement('li');
                    let a = document.createElement('a');
@@ -442,7 +377,7 @@
                    newList.appendChild(li);
                 })
             })
-           console.log(topic);
+    
         }
         </script>
     <script src="./bundle.js"></script>
