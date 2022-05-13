@@ -15,6 +15,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  debugErrorMap,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -28,11 +30,11 @@ const firebaseConfig = {
 };
 
 // init firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // init services
-const db = getFirestore();
-const auth = getAuth();
+const db = getFirestore(app);
+const auth = getAuth(app, debugErrorMap);
 
 // Reference users collection
 const colRef = collection(db, "users");
@@ -127,20 +129,18 @@ if (dlist) {
         });
 
         let tracker = (accumulator, curr) => accumulator + curr;
-        
+
         tracker = l1.reduce(tracker);
-        tracker = Math.round((tracker/100000) * 100);
-        
+        tracker = Math.round((tracker / 100000) * 100);
+
         cur_prog.innerText = String(tracker) + "%";
         progress.style.width = String(tracker) + "%";
-        
-        if(tracker > 100) {
+
+        if (tracker > 100) {
           cur_prog.style.color = "lightgreen";
-        }
-        else {
+        } else {
           cur_prog.style.color = "white";
         }
-
       });
 
       chart1.addEventListener("change", (e) => {
@@ -316,6 +316,8 @@ const addUser = async (uid, email, name) => {
   });
 };
 
+const success = document.getElementById("success");
+
 // signing users up
 const signupForm = document.getElementById("signup");
 if (signupForm) {
@@ -334,15 +336,16 @@ if (signupForm) {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (cred) => {
         await addUser(cred.user.uid, email, name);
-        window.location.href = "./index.html";
+
+        alert("Your account was successfully created");
+        window.location = `index.html`;
       })
       .catch((err) => {
-        alert("Your email is incorrect or password is less than 6");
+        success.innerText = "Invalid Email or Password";
       });
   });
 }
 
-window.user_info = [];
 //Login a user in
 const loginForm = document.getElementById("login");
 if (loginForm) {
@@ -358,6 +361,30 @@ if (loginForm) {
       })
       .catch((err) => {
         alert("Invalid user name or password");
+      });
+  });
+}
+
+//Send user an email to reset password
+const password_reset = document.getElementById("reset-password");
+const sent_error = document.getElementById("sent-email-error");
+if (password_reset) {
+  password_reset.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = password_reset.reset_email.value;
+  
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert('Check your email to reset your password');
+        window.location = `index.html`;
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        sent_error.innerText="Email does not exist in our database"
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // ..
       });
   });
 }
@@ -385,17 +412,14 @@ onAuthStateChanged(auth, async (user) => {
     let userInfoSnapshot = doc(db, "users", user.uid);
     let userInfo = await getDoc(userInfoSnapshot);
     // console.log(userInfo.data());
-    if(user_name) {
-      user_name.innerText = (userInfo.data().name);
+    if (user_name) {
+      user_name.innerText = userInfo.data().name;
     }
 
-    if(profile_name) {
-        profile_name.innerText = (userInfo.data().name);
-        profile_email.innerText =(userInfo.data().email);
+    if (profile_name) {
+      profile_name.innerText = userInfo.data().name;
+      profile_email.innerText = userInfo.data().email;
     }
-    
-    
-    console.log(userInfo.data().email);
   } else {
     await signOut(auth);
   }
