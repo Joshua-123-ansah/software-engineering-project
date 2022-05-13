@@ -82,6 +82,9 @@ function nftCollections() {
 const names = nftCollections();
 
 const line1 = document.getElementById("Engagement-NFT");
+const track_nft = document.getElementById("engage-nft");
+const progress = document.getElementById("progress");
+const cur_prog = document.getElementById("current-tweets");
 
 const chart1 = document.getElementById("NFT-Collections");
 const chart2 = document.getElementById("NFT-Collections2");
@@ -98,6 +101,7 @@ if (dlist) {
   let i = 0;
   getDocs(nftcol)
     .then((snapshot) => {
+      let l1 = "";
       let c1 = "";
       let c2 = "";
       let c3 = "";
@@ -112,6 +116,33 @@ if (dlist) {
       dlist4.innerHTML = options;
 
       // Dynamically retrieving the charts
+      line1.addEventListener("change", (e) => {
+        i = 0;
+        track_nft.innerText = line1.value;
+        snapshot.docs.forEach((doc) => {
+          if (line1.value == names[i][0]) {
+            l1 = names[i][2];
+          }
+          i += 1;
+        });
+
+        let tracker = (accumulator, curr) => accumulator + curr;
+        
+        tracker = l1.reduce(tracker);
+        tracker = Math.round((tracker/100000) * 100);
+        
+        cur_prog.innerText = String(tracker) + "%";
+        progress.style.width = String(tracker) + "%";
+        
+        if(tracker > 100) {
+          cur_prog.style.color = "lightgreen";
+        }
+        else {
+          cur_prog.style.color = "white";
+        }
+
+      });
+
       chart1.addEventListener("change", (e) => {
         i = 0;
         snapshot.docs.forEach((doc) => {

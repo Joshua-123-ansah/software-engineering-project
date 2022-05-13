@@ -11,6 +11,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
     <script src="./js/chart-js-config.js"></script>
     <title>NFT Portal</title>
+    <style>
+        .top-nft{
+            height:32px; 
+            width:32px; 
+            padding:0;
+            margin-right: 8px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body style="background-image: url('./images/bg.jpeg');
@@ -115,7 +124,7 @@
                                             <div class="col-4">
                                                 <div class="col-2">
                                                     <select list="collections35" name="NFT-Collections" id="Engagement-NFT"
-                                                    class="lists" placeholder="Collections..." style="width:200px"></select>
+                                                    class="lists" placeholder="Collections..." style="width:200px; border-radius: 10px; padding:3px"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,9 +132,9 @@
                                         <div>
                                             <div class="row progress"
                                                 style="margin: 10px auto 20px; width:700px; height: 30px; background: rgba(6, 11, 38, 1);">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress"
                                                     role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                                                    aria-valuemax="100" style="width: 95%; 
+                                                    aria-valuemax="100" style="width: 5%; 
                                                  background-color: #152584;"></div>
                                             </div>
                                             <div class="card">
@@ -135,12 +144,12 @@
                                                             0%
                                                         </div>
                                                         <div class="col-7" style="text-align:center">
-                                                            95% <br>
-                                                            <p class="header-label">Based on likes </p>
+                                                            <span id="current-tweets">95%</span> <br>
+                                                            <p class="header-label">Based on number of tweets </p>
                                                         </div>
                                                         <div class="col-3 header-label text-center">
                                                             100% <br>
-                                                            <span style="color:white; font-weight:700;">(Out of 10k likes)</span> 
+                                                            <span style="color:white; font-weight:700;">(Out of 20k tweets)</span> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -235,19 +244,19 @@
                                         done this month
                                     </p>
                                     <div class="card-body">
-                                        <table class="table align-left table-borderless">
-                                            <thead class="table-borderless text-left">
+                                        <table class="table table-borderless text-left">
+                                            <thead class="table-borderless">
                                                 <tr>
-                                                    <th scope="col" class="header-label">COMPANIES</th>
-                                                    <th scope="col" class="header-label">FLOOR PRICE</th>
-                                                    <th scope="col" class="header-label">ENGAGEMENT</th>
+                                                    <th scope="col" class="header-label" style="width: 40%; ">COMPANIES</th>
+                                                    <th scope="col" class="header-label" style="width: 20%; ">FLOOR PRICE</th>
+                                                    <th scope="col" class="header-label" style="width: 40%; ">ENGAGEMENT</th>
                                                 </tr>
                                             </thead>
-                                            <tbody style="border-color: gray !important;">
-                                                <tr style="border-color: gray !important;">
-                                                    <th class="trows" scope="row"><img src="./images/bodu-icon.png" />
-                                                        Bodu</th>
-                                                    <td class="trows">$14,000</td>
+                                            <tbody >
+                                                <tr>
+                                                    <th class="trows" scope="row"><img class="top-nft" src="./images/ethings-icon.png" />
+                                                        Otherdeed for Otherside</th>
+                                                    <td class="trows">ETH 2.98</td>
                                                     <td class="trows">
                                                         60%
                                                         <div class="progress">
@@ -258,7 +267,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="trows" scope="row"><img src="./images/Farm-icon.png" />
+                                                    <th class="trows" scope="row"><img class="top-nft"                                                   src="./images/Farm-icon.png" />
                                                         Farm things</th>
                                                     <td class="trows">$3,000</td>
                                                     <td class="trows">
@@ -271,7 +280,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="trows" scope="row"><img
+                                                    <th class="trows" scope="row"><img class="top-nft"
                                                             src="./images/smbros-icon.png" /> Smallbros NFT</th>
                                                     <td class="trows">$32,000</td>
                                                     <td class="trows">
@@ -284,7 +293,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="trows" scope="row"><img
+                                                    <th class="trows" scope="row"><img class="top-nft"
                                                             src="./images/ethings-icon.png" /> Spotify NFT</th>
                                                     <td class="trows">$32,000</td>
                                                     <td class="trows">
@@ -297,7 +306,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="trows" scope="row"><img
+                                                    <th class="trows" scope="row"><img class="top-nft"
                                                             src="./images/mkverse-icon.png" /> MakerVerse NFT </th>
                                                     <td class="trows">$400</td>
                                                     <td class="trows">
@@ -310,7 +319,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="trows" scope="row"><img src="./images/josh-icon.png" />
+                                                    <th class="trows" scope="row"><img class ="top-nft" src="./images/josh-icon.png" />
                                                         Josh NFT </th>
                                                     <td class="trows">$7,600</td>
                                                     <td class="trows">
